@@ -280,7 +280,12 @@ public class Auction {
                         Sponge.getServer()
                                 .getOnlinePlayers()
                                 .forEach(player -> player.sendMessage(ChatTypes.ACTION_BAR,
-                                        this.t_auction_message.apply(ImmutableMap.of("starter", Sponge.getServer().getPlayer(this.auctionStarter.get()).get().getName(), "item", this.auctionItem.get().getTranslation().get(player.getLocale()), "price", this.auctionBid, "time", this.timeLeft)).build()));
+                                        this.t_auction_message.apply(ImmutableMap.of(
+                                                "starter", Sponge.getServer().getPlayer(this.auctionStarter.get()).get().getName(),
+                                                "item", this.auctionItem.get().getQuantity() + "x " + this.auctionItem.get().getTranslation().get(player.getLocale()),
+                                                "price", this.auctionBid,
+                                                "time", this.timeLeft)
+                                        ).build()));
                     }
                     if (this.timeLeft-- <= 0) {
                         if (this.auctionBidder.isPresent()) {
@@ -301,6 +306,11 @@ public class Auction {
                                 this.economyService.getOrCreateAccount(this.auctionBidder.get()).ifPresent(uniqueAccount -> uniqueAccount.deposit(economyService.getDefaultCurrency(), BigDecimal.valueOf(this.auctionBid), Sponge.getCauseStackManager().getCurrentCause()));
                             }
                         } else {
+                            if (this.auctionStarter.isPresent()) {
+                                Optional<Player> starter = Sponge.getServer().getPlayer(this.auctionStarter.get());
+                                if (starter.isPresent())
+                                    starter.get().getInventory().offer(this.auctionItem.get().copy());
+                            }
                             Sponge.getServer()
                                     .getOnlinePlayers()
                                     .forEach(player -> player.sendMessage(ChatTypes.ACTION_BAR,this.t_auction_nobids.apply().build()));
