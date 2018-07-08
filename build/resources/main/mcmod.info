@@ -1,0 +1,19 @@
+[
+    {
+        "modid": "auction",
+        "name": "Auction",
+        "version": "1.1",
+        "description": "Auction for players",
+        "url": "https://zeroprox.cloud",
+        "authorList": [
+            "ewoutvs_",
+            "Alagild"
+        ],
+        "dependencies": [
+            "spongeapi@7.0.0"
+        ],
+        "requiredMods": [
+            "spongeapi@7.0.0"
+        ]
+    }
+]

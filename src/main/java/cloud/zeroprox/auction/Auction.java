@@ -56,9 +56,11 @@ public class Auction {
     @Inject
     private Logger logger;
 
+    private int s_time = 120;
+
     private long lastAuctionTime = 0;
     private long auctionDelay = 30;
-    private int timeLeft = 120;
+    private int timeLeft = s_time;
     private int count = 0;
     private Optional<UUID> auctionBidder = Optional.empty();
     private Optional<UUID> auctionStarter = Optional.empty();
@@ -112,7 +114,7 @@ public class Auction {
                 }
                 player.setItemInHand(HandTypes.MAIN_HAND, ItemStack.empty());
                 player.sendMessage(this.t_auction_success.apply().build());
-                this.timeLeft = 120;
+                this.timeLeft = s_time;
                 this.lastAuctionTime = new Date().getTime();
                 this.auctionStarter = Optional.of(player.getUniqueId());
                 this.auctionItem = itemStack;
@@ -337,11 +339,12 @@ public class Auction {
 
     @Listener
     public void onInventory(ClickInventoryEvent event, @First Player player) {
-        if (player.getOpenInventory().isPresent()) {
+        if (player != null && player.getOpenInventory().isPresent()) {
             Optional<Container> container = event.getCause().first(Container.class);
             if (container.isPresent()) {
                 Collection<InventoryTitle> titles = container.get().getProperties(InventoryTitle.class);
                 for (InventoryTitle title : titles) {
+                    if (title.getValue() == null) continue;
                     if (title.getValue().equals(Text.of(TextColors.RED, "Auction item")))
                         event.setCancelled(true);
                 }
@@ -382,6 +385,11 @@ public class Auction {
 
             configManager.save(rootNode);
             loadConfig();
+        } else if (rootNode.getNode("settings", "time").isVirtual()) {
+            rootNode.getNode("settings", "time").setValue(120);
+
+            configManager.save(rootNode);
+            loadConfig();
         } else {
             this.t_beplayer = rootNode.getNode("messages", "beplayer").getValue(TypeToken.of(TextTemplate.class));
             this.t_auction_not_taking_place = rootNode.getNode("messages", "auction_not_taking_place").getValue(TypeToken.of(TextTemplate.class));
@@ -402,6 +410,8 @@ public class Auction {
             this.t_auction_nobids = rootNode.getNode("messages", "auction_nobids").getValue(TypeToken.of(TextTemplate.class));
             this.t_auction_sold = rootNode.getNode("messages", "auction_sold").getValue(TypeToken.of(TextTemplate.class));
             this.t_auction_faillow = rootNode.getNode("messages", "auction_faillow").getValue(TypeToken.of(TextTemplate.class));
+
+            this.s_time = rootNode.getNode("settings", "time").getValue(TypeToken.of(Integer.class));
         }
     }
 
@@ -424,4 +434,5 @@ public class Auction {
             t_auction_nobids,
             t_auction_sold,
             t_auction_faillow;
+
 }
