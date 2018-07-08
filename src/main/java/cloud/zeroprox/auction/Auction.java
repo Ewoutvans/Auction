@@ -56,7 +56,10 @@ public class Auction {
     @Inject
     private Logger logger;
 
-    private int s_time = 120;
+    private int s_time = 120,
+            s_min_start = 0,
+            s_auc_fee = 0;
+    private boolean s_can_cancel_with_items = false;
 
     private long lastAuctionTime = 0;
     private long auctionDelay = 30;
@@ -108,8 +111,8 @@ public class Auction {
                     src.sendMessage(Text.of(TextColors.RED, "Starting bid has to be a real number"));
                     return CommandResult.empty();
                 }
-                if (amount.get() < 0) {
-                    src.sendMessage(this.t_auction_faillow.apply().build());
+                if (amount.get() < this.s_min_start) {
+                    src.sendMessage(this.t_auction_faillow.apply(ImmutableMap.of("min_start", this.s_min_start)).build());
                     return CommandResult.empty();
                 }
                 player.setItemInHand(HandTypes.MAIN_HAND, ItemStack.empty());
@@ -163,6 +166,10 @@ public class Auction {
                 }
                 if (this.auctionStarter.get() != player.getUniqueId()) {
                     src.sendMessage(this.t_only_cancel_when_starter.apply().build());
+                    return CommandResult.empty();
+                }
+                if (!this.s_can_cancel_with_items && this.auctionBidder.isPresent()) {
+                    src.sendMessage(this.t_only_cancel_when_no_bids.apply().build());
                     return CommandResult.empty();
                 }
                 if (this.auctionBidder.isPresent()) {
@@ -299,7 +306,7 @@ public class Auction {
                                                 this.t_auction_sold.apply(ImmutableMap.of("price", this.auctionBid, "player", bidder.get().getName())).build()));
                                 bidder.get().getInventory().offer(this.auctionItem.get().copy());
                                 bidder.get().sendMessage(this.t_you_recieved.apply(ImmutableMap.of("item", this.auctionItem.get().getTranslation().get(bidder.get().getLocale()))).build());
-                                this.economyService.getOrCreateAccount(this.auctionStarter.get()).ifPresent(uniqueAccount -> uniqueAccount.deposit(economyService.getDefaultCurrency(), BigDecimal.valueOf(this.auctionBid), Sponge.getCauseStackManager().getCurrentCause()));
+                                this.economyService.getOrCreateAccount(this.auctionStarter.get()).ifPresent(uniqueAccount -> uniqueAccount.deposit(economyService.getDefaultCurrency(), BigDecimal.valueOf(this.auctionBid - this.s_auc_fee), Sponge.getCauseStackManager().getCurrentCause()));
                             } else {
                                 Sponge.getServer()
                                         .getOnlinePlayers()
@@ -310,8 +317,7 @@ public class Auction {
                         } else {
                             if (this.auctionStarter.isPresent()) {
                                 Optional<Player> starter = Sponge.getServer().getPlayer(this.auctionStarter.get());
-                                if (starter.isPresent())
-                                    starter.get().getInventory().offer(this.auctionItem.get().copy());
+                                starter.ifPresent(player -> player.getInventory().offer(this.auctionItem.get().copy()));
                             }
                             Sponge.getServer()
                                     .getOnlinePlayers()
@@ -387,6 +393,11 @@ public class Auction {
             loadConfig();
         } else if (rootNode.getNode("settings", "time").isVirtual()) {
             rootNode.getNode("settings", "time").setValue(120);
+            rootNode.getNode("settings", "min_start").setValue(0);
+            rootNode.getNode("settings", "auc_fee").setValue(0);
+            rootNode.getNode("settings", "can_cancel_with_bids").setValue(true);
+            rootNode.getNode("messages", "only_cancel_when_no_bids").setValue(TypeToken.of(TextTemplate.class), TextTemplate.of(TextColors.RED, "You can only cancel when there are no bids."));
+            rootNode.getNode("messages", "auction_faillow").setValue(TypeToken.of(TextTemplate.class), TextTemplate.of(TextColors.RED, "Minimum value to start is ", TextTemplate.arg("min_start")));
 
             configManager.save(rootNode);
             loadConfig();
@@ -412,6 +423,11 @@ public class Auction {
             this.t_auction_faillow = rootNode.getNode("messages", "auction_faillow").getValue(TypeToken.of(TextTemplate.class));
 
             this.s_time = rootNode.getNode("settings", "time").getValue(TypeToken.of(Integer.class));
+            this.s_min_start = rootNode.getNode("settings", "min_start").getValue(TypeToken.of(Integer.class));
+            this.s_auc_fee = rootNode.getNode("settings", "auc_fee").getValue(TypeToken.of(Integer.class));
+            this.s_can_cancel_with_items = rootNode.getNode("settings", "can_cancel_with_bids").getValue(TypeToken.of(Boolean.class));
+            this.t_only_cancel_when_no_bids = rootNode.getNode("messages", "only_cancel_when_no_bids").getValue(TypeToken.of(TextTemplate.class));
+
         }
     }
 
@@ -433,6 +449,7 @@ public class Auction {
             t_auctionbid_outbid,
             t_auction_nobids,
             t_auction_sold,
-            t_auction_faillow;
+            t_auction_faillow,
+            t_only_cancel_when_no_bids;
 
 }

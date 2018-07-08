@@ -2,17 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="73c06d9e-a6cc-4c8b-bea6-67ef60e2dcfd" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__aopalliance_aopalliance_1_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__aopalliance_aopalliance_1_0.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_code_gson_gson_2_8_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_code_gson_gson_2_8_0.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_guava_guava_21_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_guava_guava_21_0.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__javax_inject_javax_inject_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__javax_inject_javax_inject_1.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_slf4j_slf4j_api_1_7_25.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_slf4j_slf4j_api_1_7_25.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_spongepowered_spongeapi_7_0_0_SNAPSHOT.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_yaml_snakeyaml_1_18.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_yaml_snakeyaml_1_18.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/Auction_main.iml" afterPath="$PROJECT_DIR$/.idea/modules/Auction_main.iml" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/Auction_test.iml" afterPath="$PROJECT_DIR$/.idea/modules/Auction_test.iml" />
-      <change beforePath="$PROJECT_DIR$/Auction.iml" afterPath="$PROJECT_DIR$/Auction.iml" />
-      <change beforePath="$PROJECT_DIR$/gradlew.bat" afterPath="$PROJECT_DIR$/gradlew.bat" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/build/libs/Auction-1.0.jar" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/build/libs/Auction-1.0.jar.sig" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/build/libs/Auction-1.1.jar" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/build/libs/Auction-1.1.jar.sig" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" afterPath="$PROJECT_DIR$/gradle.properties" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cloud/zeroprox/auction/Auction.java" afterPath="$PROJECT_DIR$/src/main/java/cloud/zeroprox/auction/Auction.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -42,11 +37,26 @@
       <file leaf-file-name="Auction.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/cloud/zeroprox/auction/Auction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="366" column="28" lean-forward="true" selection-start-line="366" selection-start-column="28" selection-end-line="366" selection-end-column="28" />
+            <state relative-caret-position="76">
+              <caret line="396" column="61" lean-forward="false" selection-start-line="396" selection-start-column="61" selection-end-line="396" selection-end-column="61" />
               <folding>
-                <element signature="e#11436#11445#0" expanded="true" />
+                <element signature="e#3839#6046#0" expanded="false" />
+                <element signature="e#6236#7275#0" expanded="false" />
+                <element signature="e#7471#9292#0" expanded="false" />
+                <element signature="e#9391#10406#0" expanded="false" />
+                <element signature="e#10843#13721#0" expanded="false" />
+                <element signature="e#11847#11856#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/build.gradle">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -66,6 +76,9 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>timeLeft</find>
+      <find>t_auction_faillow</find>
+      <find>t_</find>
+      <find>min_start</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -290,9 +303,9 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="4551524877000" />
+        <entry key="$PROJECT_DIR$" value="4564452395000" />
         <entry key="$PROJECT_DIR$/build.gradle" value="2636966145" />
-        <entry key="$PROJECT_DIR$/gradle.properties" value="1619614800" />
+        <entry key="$PROJECT_DIR$/gradle.properties" value="4185918954" />
         <entry key="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" value="1781704101" />
       </map>
     </option>
@@ -435,7 +448,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds">
     <option name="x" value="1920" />
     <option name="y" value="22" />
     <option name="width" value="1920" />
@@ -479,6 +492,11 @@
             <path>
               <item name="Auction" type="b2602c69:ProjectViewProjectNode" />
               <item name="Auction" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+            <path>
+              <item name="Auction" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Auction" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -633,7 +651,7 @@
       <workItem from="1518114146945" duration="1362000" />
       <workItem from="1518120633809" duration="10000" />
       <workItem from="1525412717484" duration="192000" />
-      <workItem from="1531040066462" duration="1061000" />
+      <workItem from="1531040066462" duration="3462000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <created>1516705537770</created>
@@ -653,11 +671,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4019000" />
+    <option name="totallyTimeSpent" value="6420000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1920" y="22" width="1920" height="1058" extended-state="6" />
-    <editor active="true" />
+    <frame x="1920" y="22" width="1920" height="1058" extended-state="0" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -666,9 +683,9 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26447368" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2638298" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15851064" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28085107" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17199148" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -710,7 +727,12 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#11436#11445#0" expanded="true" />
+            <element signature="e#3839#6046#0" expanded="false" />
+            <element signature="e#6236#7275#0" expanded="false" />
+            <element signature="e#7471#9292#0" expanded="false" />
+            <element signature="e#9391#10406#0" expanded="false" />
+            <element signature="e#10843#13721#0" expanded="false" />
+            <element signature="e#11847#11856#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -728,7 +750,12 @@
         <state relative-caret-position="3555">
           <caret line="285" column="0" lean-forward="false" selection-start-line="284" selection-start-column="0" selection-end-line="285" selection-end-column="0" />
           <folding>
-            <element signature="e#11436#11445#0" expanded="true" />
+            <element signature="e#3839#6046#0" expanded="false" />
+            <element signature="e#6236#7275#0" expanded="false" />
+            <element signature="e#7471#9292#0" expanded="false" />
+            <element signature="e#9391#10406#0" expanded="false" />
+            <element signature="e#10843#13721#0" expanded="false" />
+            <element signature="e#11847#11856#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -746,7 +773,12 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#11436#11445#0" expanded="true" />
+            <element signature="e#3839#6046#0" expanded="false" />
+            <element signature="e#6236#7275#0" expanded="false" />
+            <element signature="e#7471#9292#0" expanded="false" />
+            <element signature="e#9391#10406#0" expanded="false" />
+            <element signature="e#10843#13721#0" expanded="false" />
+            <element signature="e#11847#11856#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -756,7 +788,12 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#11436#11445#0" expanded="true" />
+            <element signature="e#3839#6046#0" expanded="false" />
+            <element signature="e#6236#7275#0" expanded="false" />
+            <element signature="e#7471#9292#0" expanded="false" />
+            <element signature="e#9391#10406#0" expanded="false" />
+            <element signature="e#10843#13721#0" expanded="false" />
+            <element signature="e#11847#11856#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -782,18 +819,8 @@
     <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
-          <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cloud/zeroprox/auction/Auction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="366" column="28" lean-forward="true" selection-start-line="366" selection-start-column="28" selection-end-line="366" selection-end-column="28" />
-          <folding>
-            <element signature="e#11436#11445#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -802,6 +829,21 @@
         <state relative-caret-position="30">
           <caret line="2" column="17" lean-forward="false" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cloud/zeroprox/auction/Auction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="396" column="61" lean-forward="false" selection-start-line="396" selection-start-column="61" selection-end-line="396" selection-end-column="61" />
+          <folding>
+            <element signature="e#3839#6046#0" expanded="false" />
+            <element signature="e#6236#7275#0" expanded="false" />
+            <element signature="e#7471#9292#0" expanded="false" />
+            <element signature="e#9391#10406#0" expanded="false" />
+            <element signature="e#10843#13721#0" expanded="false" />
+            <element signature="e#11847#11856#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
