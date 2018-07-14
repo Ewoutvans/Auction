@@ -233,7 +233,7 @@ public class Auction {
                 }
                 int newBid = args.<Integer>getOne(Text.of("bid")).orElse(this.auctionBid + 100);
                 if (newBid <= this.auctionBid) {
-                    src.sendMessage(this.t_auctionbid_failtoolow.apply().build());
+                    src.sendMessage(this.t_auctionbid_failtoolow.apply(ImmutableMap.of("price", this.auctionBid)).build());
                     return CommandResult.empty();
                 }
                 Optional<UniqueAccount> uOpt = this.economyService.getOrCreateAccount(player.getUniqueId());
