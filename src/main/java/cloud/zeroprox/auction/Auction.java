@@ -19,6 +19,7 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
+import org.spongepowered.api.event.item.inventory.ChangeInventoryEvent;
 import org.spongepowered.api.event.item.inventory.ClickInventoryEvent;
 import org.spongepowered.api.item.inventory.Container;
 import org.spongepowered.api.item.inventory.Inventory;
@@ -28,6 +29,7 @@ import org.spongepowered.api.item.inventory.property.InventoryDimension;
 import org.spongepowered.api.item.inventory.property.InventoryTitle;
 import org.spongepowered.api.item.inventory.property.SlotPos;
 import org.spongepowered.api.item.inventory.query.QueryOperationTypes;
+import org.spongepowered.api.item.inventory.transaction.SlotTransaction;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.service.economy.EconomyService;
@@ -346,14 +348,9 @@ public class Auction {
     @Listener
     public void onInventory(ClickInventoryEvent event, @First Player player) {
         if (player != null && player.getOpenInventory().isPresent()) {
-            Optional<Container> container = event.getCause().first(Container.class);
-            if (container.isPresent()) {
-                Collection<InventoryTitle> titles = container.get().getProperties(InventoryTitle.class);
-                for (InventoryTitle title : titles) {
-                    if (title.getValue() == null) continue;
-                    if (title.getValue().equals(Text.of(TextColors.RED, "Auction item")))
-                        event.setCancelled(true);
-                }
+            String title = event.getTargetInventory().getName().get();
+            if (title.equals("§cAuction item"))  {
+                event.setCancelled(true);
             }
         }
     }
