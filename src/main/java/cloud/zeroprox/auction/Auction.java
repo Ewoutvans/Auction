@@ -279,6 +279,19 @@ public class Auction {
                 .execute(() -> {
                     if (!this.auctionStarter.isPresent()) return;
 
+                    if (!Sponge.getServer().getPlayer(this.auctionStarter.get()).isPresent()) {
+                        if (this.auctionBidder.isPresent()) {
+                            Optional<UniqueAccount> oOpt = this.economyService.getOrCreateAccount(this.auctionBidder.get());
+                            oOpt.ifPresent(uniqueAccount -> uniqueAccount.deposit(this.economyService.getDefaultCurrency(), BigDecimal.valueOf(this.auctionBid), Sponge.getCauseStackManager().getCurrentCause()));
+                        }
+                        this.needBroadcast = false;
+                        this.count = 0;
+                        this.auctionBidder = Optional.empty();
+                        this.auctionStarter = Optional.empty();
+                        this.auctionItem = Optional.empty();
+                        return;
+                    }
+
                     if ((this.timeLeft > 0 && this.timeLeft % 30 == 0)) {
                         this.count = 4;
                     }
