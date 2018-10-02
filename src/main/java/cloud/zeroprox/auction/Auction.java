@@ -67,9 +67,9 @@ public class Auction {
     private long auctionDelay = 30;
     private int timeLeft = s_time;
     private int count = 0;
-    private Optional<UUID> auctionBidder = Optional.empty();
-    private Optional<UUID> auctionStarter = Optional.empty();
-    private Optional<ItemStack> auctionItem = Optional.empty();
+    private UUID auctionBidder;
+    private UUID auctionStarter;
+    private ItemStack auctionItem;
     private int auctionBid = 0;
     private EconomyService economyService;
     private boolean needBroadcast = false;
@@ -94,7 +94,7 @@ public class Auction {
                     return CommandResult.empty();
                 }
                 Player player = (Player) src;
-                if (this.auctionStarter.isPresent() || this.auctionItem.isPresent()) {
+                if (this.auctionStarter != null || this.auctionItem != null) {
                     src.sendMessage(this.t_auction_failactive.apply().build());
                     return CommandResult.empty();
                 }
@@ -121,8 +121,8 @@ public class Auction {
                 player.sendMessage(this.t_auction_success.apply().build());
                 this.timeLeft = s_time;
                 this.lastAuctionTime = new Date().getTime();
-                this.auctionStarter = Optional.of(player.getUniqueId());
-                this.auctionItem = itemStack;
+                this.auctionStarter = player.getUniqueId();
+                this.auctionItem = itemStack.get();
                 this.count = 4;
                 this.auctionBid = amount.get();
                 return CommandResult.success();
@@ -138,7 +138,7 @@ public class Auction {
                     return CommandResult.empty();
                 }
                 Player player = (Player) src;
-                if (!this.auctionStarter.isPresent() || !this.auctionItem.isPresent()) {
+                if (this.auctionStarter == null || this.auctionItem == null) {
                     src.sendMessage(this.t_auction_not_taking_place.apply().build());
                     return CommandResult.empty();
                 }
@@ -147,7 +147,7 @@ public class Auction {
                         .property(InventoryDimension.of(9, 1))
                         .property(InventoryTitle.of(Text.of(TextColors.RED, "Auction item")))
                         .build(this);
-                inventory.query(QueryOperationTypes.INVENTORY_PROPERTY.of(SlotPos.of(4, 0))).offer(this.auctionItem.get().copy());
+                inventory.query(QueryOperationTypes.INVENTORY_PROPERTY.of(SlotPos.of(4, 0))).offer(this.auctionItem.copy());
                 player.openInventory(inventory);
                 return CommandResult.empty();
             })
@@ -162,28 +162,28 @@ public class Auction {
                     return CommandResult.empty();
                 }
                 Player player = (Player) src;
-                if (!this.auctionStarter.isPresent() || !this.auctionItem.isPresent()) {
+                if (this.auctionStarter == null || this.auctionItem == null) {
                     src.sendMessage(this.t_auction_not_taking_place.apply().build());
                     return CommandResult.empty();
                 }
-                if (this.auctionStarter.get() != player.getUniqueId()) {
+                if (this.auctionStarter != player.getUniqueId()) {
                     src.sendMessage(this.t_only_cancel_when_starter.apply().build());
                     return CommandResult.empty();
                 }
-                if (!this.s_can_cancel_with_items && this.auctionBidder.isPresent()) {
+                if (!this.s_can_cancel_with_items && this.auctionBidder != null) {
                     src.sendMessage(this.t_only_cancel_when_no_bids.apply().build());
                     return CommandResult.empty();
                 }
-                if (this.auctionBidder.isPresent()) {
-                    Optional<UniqueAccount> oOpt = this.economyService.getOrCreateAccount(this.auctionBidder.get());
+                if (this.auctionBidder != null) {
+                    Optional<UniqueAccount> oOpt = this.economyService.getOrCreateAccount(this.auctionBidder);
                     oOpt.ifPresent(uniqueAccount -> uniqueAccount.deposit(this.economyService.getDefaultCurrency(), BigDecimal.valueOf(this.auctionBid), Sponge.getCauseStackManager().getCurrentCause()));
                 }
                 this.needBroadcast = false;
                 this.count = 0;
-                this.auctionBidder = Optional.empty();
-                this.auctionStarter = Optional.empty();
-                player.getInventory().offer(this.auctionItem.orElse(ItemStack.empty()));
-                this.auctionItem = Optional.empty();
+                this.auctionBidder = null;
+                this.auctionStarter = null;
+                player.getInventory().offer(this.auctionItem == null ? ItemStack.empty() : this.auctionItem);
+                this.auctionItem = null;
                 player.sendMessage(this.t_auction_cancelled.apply().build());
                 return CommandResult.success();
             })
@@ -221,15 +221,15 @@ public class Auction {
                     return CommandResult.empty();
                 }
                 Player player = (Player) src;
-                if (!this.auctionStarter.isPresent() || !this.auctionItem.isPresent()) {
+                if (this.auctionStarter == null || this.auctionItem == null) {
                     src.sendMessage(this.t_auction_not_taking_place.apply().build());
                     return CommandResult.empty();
                 }
-                if (this.auctionStarter.get() == player.getUniqueId()) {
+                if (this.auctionStarter == player.getUniqueId()) {
                     src.sendMessage(this.t_auctionbid_failbid.apply().build());
                     return CommandResult.empty();
                 }
-                if (this.auctionBidder.isPresent() && this.auctionBidder.get() == player.getUniqueId()) {
+                if (this.auctionBidder != null && this.auctionBidder == player.getUniqueId()) {
                     src.sendMessage(this.t_auctionbid_failbidder.apply().build());
                     return CommandResult.empty();
                 }
@@ -248,14 +248,14 @@ public class Auction {
                     src.sendMessage(this.t_auctionbid_failmoney.apply().build());
                     return CommandResult.empty();
                 }
-                if (this.auctionBidder.isPresent()) {
-                    Sponge.getServer().getPlayer(this.auctionBidder.get()).ifPresent(player1 -> player1.sendMessage(this.t_auctionbid_outbid.apply(ImmutableMap.of("price", newBid)).build()));
-                    Optional<UniqueAccount> oOpt = this.economyService.getOrCreateAccount(this.auctionBidder.get());
+                if (this.auctionBidder != null) {
+                    Sponge.getServer().getPlayer(this.auctionBidder).ifPresent(player1 -> player1.sendMessage(this.t_auctionbid_outbid.apply(ImmutableMap.of("price", newBid)).build()));
+                    Optional<UniqueAccount> oOpt = this.economyService.getOrCreateAccount(this.auctionBidder);
                     oOpt.ifPresent(uniqueAccount -> uniqueAccount.deposit(this.economyService.getDefaultCurrency(), BigDecimal.valueOf(this.auctionBid), Sponge.getCauseStackManager().getCurrentCause()));
                 }
                 this.needBroadcast = true;
                 this.count = 3;
-                this.auctionBidder = Optional.of(player.getUniqueId());
+                this.auctionBidder = player.getUniqueId();
                 this.auctionBid = newBid;
                 player.sendMessage(this.t_auctionbid_success.apply().build());
                 return CommandResult.success();
@@ -277,18 +277,18 @@ public class Auction {
 
         Task task = Task.builder()
                 .execute(() -> {
-                    if (!this.auctionStarter.isPresent()) return;
+                    if (this.auctionStarter == null) return;
 
-                    if (!Sponge.getServer().getPlayer(this.auctionStarter.get()).isPresent()) {
-                        if (this.auctionBidder.isPresent()) {
-                            Optional<UniqueAccount> oOpt = this.economyService.getOrCreateAccount(this.auctionBidder.get());
+                    if (!Sponge.getServer().getPlayer(this.auctionStarter).isPresent()) {
+                        if (this.auctionBidder != null) {
+                            Optional<UniqueAccount> oOpt = this.economyService.getOrCreateAccount(this.auctionBidder);
                             oOpt.ifPresent(uniqueAccount -> uniqueAccount.deposit(this.economyService.getDefaultCurrency(), BigDecimal.valueOf(this.auctionBid), Sponge.getCauseStackManager().getCurrentCause()));
                         }
                         this.needBroadcast = false;
                         this.count = 0;
-                        this.auctionBidder = Optional.empty();
-                        this.auctionStarter = Optional.empty();
-                        this.auctionItem = Optional.empty();
+                        this.auctionBidder = null;
+                        this.auctionStarter = null;
+                        this.auctionItem = null;
                         return;
                     }
 
@@ -305,43 +305,43 @@ public class Auction {
                                 .getOnlinePlayers()
                                 .forEach(player -> player.sendMessage(ChatTypes.ACTION_BAR,
                                         this.t_auction_message.apply(ImmutableMap.of(
-                                                "starter", Sponge.getServer().getPlayer(this.auctionStarter.get()).get().getName(),
-                                                "item", this.auctionItem.get().getQuantity() + "x " + this.auctionItem.get().getTranslation().get(player.getLocale()),
+                                                "starter", Sponge.getServer().getPlayer(this.auctionStarter).get().getName(),
+                                                "item", this.auctionItem.getQuantity() + "x " + this.auctionItem.getTranslation().get(player.getLocale()),
                                                 "price", this.auctionBid,
                                                 "time", this.timeLeft)
                                         ).build()));
                     }
                     if (this.timeLeft-- <= 0) {
-                        if (this.auctionBidder.isPresent()) {
-                            Optional<Player> bidder = Sponge.getServer().getPlayer(this.auctionBidder.get());
+                        if (this.auctionBidder != null) {
+                            Optional<Player> bidder = Sponge.getServer().getPlayer(this.auctionBidder);
                             if (bidder.isPresent()) {
                                 Sponge.getServer()
                                         .getOnlinePlayers()
                                         .forEach(player -> player.sendMessage(ChatTypes.ACTION_BAR,
                                                 this.t_auction_sold.apply(ImmutableMap.of("price", this.auctionBid, "player", bidder.get().getName())).build()));
-                                bidder.get().getInventory().offer(this.auctionItem.get().copy());
-                                bidder.get().sendMessage(this.t_you_recieved.apply(ImmutableMap.of("item", this.auctionItem.get().getTranslation().get(bidder.get().getLocale()))).build());
-                                this.economyService.getOrCreateAccount(this.auctionStarter.get()).ifPresent(uniqueAccount -> uniqueAccount.deposit(economyService.getDefaultCurrency(), BigDecimal.valueOf(this.auctionBid - this.s_auc_fee), Sponge.getCauseStackManager().getCurrentCause()));
+                                bidder.get().getInventory().offer(this.auctionItem.copy());
+                                bidder.get().sendMessage(this.t_you_recieved.apply(ImmutableMap.of("item", this.auctionItem.getTranslation().get(bidder.get().getLocale()))).build());
+                                this.economyService.getOrCreateAccount(this.auctionStarter).ifPresent(uniqueAccount -> uniqueAccount.deposit(economyService.getDefaultCurrency(), BigDecimal.valueOf(this.auctionBid - this.s_auc_fee), Sponge.getCauseStackManager().getCurrentCause()));
                             } else {
                                 Sponge.getServer()
                                         .getOnlinePlayers()
                                         .forEach(player -> player.sendMessage(ChatTypes.ACTION_BAR, this.t_auction_nobids.apply().build()));
-                                Sponge.getServer().getPlayer(this.auctionStarter.get()).ifPresent(player -> player.getInventory().offer(this.auctionItem.get().copy()));
-                                this.economyService.getOrCreateAccount(this.auctionBidder.get()).ifPresent(uniqueAccount -> uniqueAccount.deposit(economyService.getDefaultCurrency(), BigDecimal.valueOf(this.auctionBid), Sponge.getCauseStackManager().getCurrentCause()));
+                                Sponge.getServer().getPlayer(this.auctionStarter).ifPresent(player -> player.getInventory().offer(this.auctionItem.copy()));
+                                this.economyService.getOrCreateAccount(this.auctionBidder).ifPresent(uniqueAccount -> uniqueAccount.deposit(economyService.getDefaultCurrency(), BigDecimal.valueOf(this.auctionBid), Sponge.getCauseStackManager().getCurrentCause()));
                             }
                         } else {
-                            if (this.auctionStarter.isPresent()) {
-                                Optional<Player> starter = Sponge.getServer().getPlayer(this.auctionStarter.get());
-                                starter.ifPresent(player -> player.getInventory().offer(this.auctionItem.get().copy()));
+                            if (this.auctionStarter != null) {
+                                Optional<Player> starter = Sponge.getServer().getPlayer(this.auctionStarter);
+                                starter.ifPresent(player -> player.getInventory().offer(this.auctionItem.copy()));
                             }
                             Sponge.getServer()
                                     .getOnlinePlayers()
                                     .forEach(player -> player.sendMessage(ChatTypes.ACTION_BAR,this.t_auction_nobids.apply().build()));
                         }
                         this.auctionBid = 0;
-                        this.auctionItem = Optional.empty();
-                        this.auctionBidder = Optional.empty();
-                        this.auctionStarter = Optional.empty();
+                        this.auctionItem = null;
+                        this.auctionBidder = null;
+                        this.auctionStarter = null;
                     }
                 })
                 .interval(1, TimeUnit.SECONDS)
