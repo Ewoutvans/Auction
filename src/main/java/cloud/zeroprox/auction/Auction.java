@@ -225,11 +225,11 @@ public class Auction {
                     src.sendMessage(this.t_auction_not_taking_place.apply().build());
                     return CommandResult.empty();
                 }
-                if (this.auctionStarter == player.getUniqueId()) {
+                if (this.auctionStarter.equals(player.getUniqueId())) {
                     src.sendMessage(this.t_auctionbid_failbid.apply().build());
                     return CommandResult.empty();
                 }
-                if (this.auctionBidder != null && this.auctionBidder == player.getUniqueId()) {
+                if (this.auctionBidder != null && this.auctionBidder.equals(player.getUniqueId())) {
                     src.sendMessage(this.t_auctionbid_failbidder.apply().build());
                     return CommandResult.empty();
                 }
